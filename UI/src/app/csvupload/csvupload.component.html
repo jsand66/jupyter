@@ -1,0 +1,26 @@
+<div class="my-container">
+  <div class="loading" id="loading" *ngIf="loading"></div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">BI-Tool</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+<div class="container-body">
+  <div class="btn-group">
+    <button [disabled]="port!=undefinded" class="btn btn-primary m-2" (click)="start_jupyter()">Start Jupyter</button>
+    <button class="btn btn-primary m-2" (click)="stopJupyter()">Stop Jupyter</button>
+   
+    <label class="file">
+        <input type="file" id="myFile" aria-label="File browser example" (change)='openFile($event)'>
+        <span class="file-custom"></span>
+    </label>
+    <button class="btn btn-primary m-2" (click)="uploadCSV()">Upload</button>
+    
+  </div>
+  <div class="Iframe" *ngIf="iframe_url!=undefined">
+    
+    <iframe [src]=iframe_url frameborder="0" id='iframe' [style.height.px]="height"></iframe>
+  </div>
+</div>
