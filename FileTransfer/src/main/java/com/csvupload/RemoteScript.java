@@ -84,7 +84,7 @@ public class RemoteScript {
 		return "Jupyter stopped";
 	}
 
-	public void writeFile(String container_id,String fileName) {
+	public void writeFile(String container_id, String fileName) {
 		try {
 			JSch jsch = new JSch();
 			Session session;
@@ -96,7 +96,8 @@ public class RemoteScript {
 			session.setPassword(env.getProperty("remote.user.password"));
 			session.connect();
 			ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
-			channelExec.setCommand("sh " + env.getProperty("remote.script.jupyter.copyfile") + " " + container_id+" "+fileName);
+			channelExec.setCommand(
+					"sh " + env.getProperty("remote.script.jupyter.copyfile") + " " + container_id + " " + fileName);
 			channelExec.connect();
 			InputStream in = channelExec.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
