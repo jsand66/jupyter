@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/filetransfer")
 public class Controller {
 
-	// @Autowired
-	// private Environment env;
-
 	@RequestMapping(value = "/uploadCSV", method = RequestMethod.POST)
 	public @ResponseBody String uploadCSV(@RequestParam String data, HttpServletResponse res,
 			@RequestParam String filename, @RequestParam String container_id) {

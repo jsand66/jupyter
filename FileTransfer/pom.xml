@@ -73,6 +73,6 @@
 
 	</dependencies>
 	<build>
-		<finalName>FileTransfer-0.0.1-SNAPSHOT</finalName>
+		<finalName>jupyter-support</finalName>
 	</build>
 </project>
