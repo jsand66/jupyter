@@ -1,4 +1,4 @@
-package com.csvupload;
+package com.jupyter;
 
 import java.io.FileWriter;
 import java.io.IOException;
