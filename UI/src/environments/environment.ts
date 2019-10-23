@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   ip:"http://c1z-dv-esett-02.adm.intcx.net:",
-  apiendpoint:"8080/FileTransfer-0.0.1-SNAPSHOT/filetransfer/"
+  apiendpoint:"8080/jupyter-support/filetransfer/"
 };
 
 /*
