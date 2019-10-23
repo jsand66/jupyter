@@ -47,6 +47,7 @@ public class RemoteScript {
 	public String stopJupyter(String container_id) {
 		try {
 			System.out.println("contid:" + container_id);
+			String out=saveWorkspace(container_id);
 			File file = new File(getClass().getClassLoader().getResource("jupyter_stop.sh").getFile());
 			String cmd = "sh " + file + " " + container_id;
 			System.out.println("cmd:" + cmd);
@@ -64,7 +65,7 @@ public class RemoteScript {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return "Jupyter stopped";
+		return "Saved Workspace and Jupyter stopped";
 	}
 
 	public void writeFile(String container_id, String fileName) {
@@ -115,6 +116,30 @@ public class RemoteScript {
 
 		try {
 			File file = new File(getClass().getClassLoader().getResource("jupyter_container_port.sh").getFile());
+			String cmd = "sh " + file + " " + container_id;
+			Runtime run = Runtime.getRuntime();
+			Process pr = run.exec(cmd);
+			pr.waitFor();
+			BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			String line = "";
+			while ((line = buf.readLine()) != null) {
+				output = line;
+				System.out.println("out " + output);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+	
+	public String saveWorkspace(String container_id) {
+		String output = null;
+
+		try {
+			File file = new File(getClass().getClassLoader().getResource("jupyter_save_work.sh").getFile());
 			String cmd = "sh " + file + " " + container_id;
 			Runtime run = Runtime.getRuntime();
 			Process pr = run.exec(cmd);
