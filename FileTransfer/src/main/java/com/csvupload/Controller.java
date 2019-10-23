@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,15 +41,8 @@ public class Controller {
 	public @ResponseBody String startJupyter(HttpServletResponse res) {
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		RemoteScript rs = new RemoteScript();
-		String resposne = rs.startJupyter();
-		return resposne;
-	}
-
-	@RequestMapping(value = "/sample", method = RequestMethod.GET)
-	public @ResponseBody String sample(HttpServletResponse res) {
-		res.setHeader("Access-Control-Allow-Origin", "*");
-
-		return "hello";
+		JSONObject resposne = rs.startJupyter();
+		return resposne.toString();
 	}
 
 	@RequestMapping(value = "/stopJupyter", method = RequestMethod.POST)

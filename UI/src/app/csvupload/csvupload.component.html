@@ -9,14 +9,14 @@
 </nav>
 <div class="container-body">
   <div class="btn-group">
-    <button [disabled]="port!=undefinded" class="btn btn-primary m-2" (click)="start_jupyter()">Start Jupyter</button>
-    <button class="btn btn-primary m-2" (click)="stopJupyter()">Stop Jupyter</button>
+    <button [disabled]="port!=undefined" class="btn btn-primary m-2" (click)="start_jupyter()">Start Jupyter</button>
+    <button [disabled]="container_id==undefined" class="btn btn-primary m-2" (click)="stopJupyter()">Stop Jupyter</button>
    
     <label class="file">
         <input type="file" id="myFile" aria-label="File browser example" (change)='openFile($event)'>
         <span class="file-custom"></span>
     </label>
-    <button class="btn btn-primary m-2" (click)="uploadCSV()">Upload</button>
+    <button [disabled]="container_id==undefined" class="btn btn-primary m-2" (click)="uploadCSV()">Upload</button>
     
   </div>
   <div class="Iframe" *ngIf="iframe_url!=undefined">

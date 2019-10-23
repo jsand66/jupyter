@@ -9,6 +9,7 @@ import { URLSearchParams } from '@angular/http';
   styleUrls: ['./csvupload.component.css']
 })
 export class CsvuploadComponent implements OnInit {
+  container_id: any;
   height: any;
 
   port: any;
@@ -36,11 +37,22 @@ export class CsvuploadComponent implements OnInit {
     }
   }
   uploadCSV() {
-    if (localStorage.getItem("container_name") != undefined) {
 
-      var requestData = { 'data': btoa(this.binaryString), 'filename': this.filename, 'container_id': localStorage.getItem("container_id") };
-      this.upload_service(requestData).then((data: any) => {
-      })
+    if (localStorage.getItem("container_name") != undefined) {
+      if(this.binaryString!=undefined)
+      {
+        this.loading=false;
+        var requestData = { 'data': btoa(this.binaryString), 'filename': this.filename, 'container_id': localStorage.getItem("container_id") };
+        this.upload_service(requestData).then((data: any) => {
+          alert("File Uploaded Successfully")
+          this.loading=false;
+        })
+      }
+      else
+      {
+        alert("please select file and upload")
+      }
+      
     } else {
       alert("Please Start Jupyter and Upload File")
     }
@@ -51,12 +63,19 @@ export class CsvuploadComponent implements OnInit {
     this.stop_jupyter_service(requestData).then((data) => {
       if(data!=undefined)
       {
-        alert(data)
+        
         localStorage.removeItem('container_name');
         localStorage.removeItem('port');
+        localStorage.removeItem('container_id');
         this.iframe_url=undefined;
         this.port=undefined;
+        this.container_id=undefined;
         this.loading=false;
+        alert("Jupyter Stopped")
+      }
+      else{
+        alert("Service Error ")
+        this.loading = false;
       }
       
     })
@@ -65,27 +84,35 @@ export class CsvuploadComponent implements OnInit {
     this.loading = true;
     if (localStorage.getItem("container_name") == undefined) {
       this.start_jupyter_service().then((data: any) => {
-        if (data != undefined) {
+        if (data.port != undefined && data.port.length>0) {
         setTimeout(()=> {
           this.port = data.port;
+          this.container_id=data.container_id;
           localStorage.removeItem('container_name');
           localStorage.removeItem('port');
           localStorage.setItem("container_name", data.container_name);
           localStorage.setItem("container_id", data.container_id);
           localStorage.setItem("port", data.port);
-          let url = environment.ip + data.port + "/tree"
+          let url = environment.ip + data.port + "/lab"
           this.iframe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url)
           this.loading = false;
         }, 12000);
         }
+        else{
+          alert("Jupyter Image is not Available")
+          this.loading = false;
+        }
       })
     }
     else {
-      alert(localStorage.getItem("container_name") )
+      
       this.port = localStorage.getItem("port")
-      let url = environment.ip + this.port  + "/tree"
+      
+      this.container_id=localStorage.getItem("container_id")
+      let url = environment.ip + this.port  + "/lab"
       this.iframe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url)
       this.loading = false;
+      
     }
     this.height = window.innerHeight - 120;
   }
@@ -100,6 +127,7 @@ export class CsvuploadComponent implements OnInit {
           },
           (err) => {
             reject(err);
+            this.loading = false;
             // ////this.congnitoUtil.refresh();
           });
       });
@@ -118,6 +146,7 @@ export class CsvuploadComponent implements OnInit {
           },
           (err) => {
             reject(err);
+            this.loading = false;
             // ////this.congnitoUtil.refresh();
           });
       });
@@ -134,6 +163,7 @@ export class CsvuploadComponent implements OnInit {
           },
           (err) => {
             reject(err);
+            this.loading = false;
             // ////this.congnitoUtil.refresh();
           });
       });
