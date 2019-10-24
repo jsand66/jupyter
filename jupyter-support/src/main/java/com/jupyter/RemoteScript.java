@@ -158,5 +158,29 @@ public class RemoteScript {
 		}
 		return output;
 	}
+	
+	public String checkContainer(String container_id) {
+		String output = null;
+
+		try {
+			File file = new File(getClass().getClassLoader().getResource("check_container.sh").getFile());
+			String cmd = "sh " + file + " " + container_id;
+			Runtime run = Runtime.getRuntime();
+			Process pr = run.exec(cmd);
+			pr.waitFor();
+			BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			String line = "";
+			while ((line = buf.readLine()) != null) {
+				output = line;
+				System.out.println("out " + output);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
 
 }
