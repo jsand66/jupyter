@@ -1,0 +1,339 @@
+The Recipe:
+
+ 
+
+sudo docker run --name lfnet-container --hostname c1z-dv-esdkr-01 -it <rhel76 image id> /bin/bash
+
+ 
+
+vi /etc/yum.repos.d/RM-rmidc-edesk.repo
+
+ 
+
+ 
+
+[rmidc-edesk]
+
+name=ICE-IDC Edesk
+
+baseurl=http://svc-ymrd:D3adp0ol@artif/artifactory/rmidc-edesk
+
+enabled=1
+
+gpgcheck=0
+
+metadata_expire=30
+
+sslverify=0
+
+skip_if_unavailable=1
+
+timeout=240
+
+ 
+
+sudo yum install ICEesig-bootstrap --enablerepo=*
+
+ 
+
+sudo yum install ICErm-yumrepos
+
+ 
+
+sudo yum install LfnetServiceAccounts --enablerepo=*
+
+ 
+
+sudo yum install ICEentptools-user --enablerepo=*
+
+ 
+
+sudo yum install wireshark-1.10.14-14.el7
+
+ 
+
+sudo yum install socat-1.7.3.2-2.el7
+
+ 
+
+sudo yum install tcpdump-4.9.2-3.el7
+
+ 
+
+sudo yum install traceroute-2.0.22-2.el7
+
+ 
+
+sudo yum install strace
+
+ 
+
+sudo yum install lsof
+
+ 
+
+Had to install net-tools for the ifconfig; and cronie for crontab
+
+ 
+
+mkdir -p /var/opt/san-temp
+
+chown lfnet:lfnet /var/opt/san-temp
+
+(Need to create /var/opt/san-temp; and give ownership as lfnet:lfnet to san-temp and perm as 755)
+
+ 
+
+ 
+
+sudo yum install lfnet-sys --enablerepo=*
+
+ 
+
+ 
+
+After the lfnet-sys install, got the following problem-
+
+[root@c1z-dv-docker-01 /]# sudo su - lfnet
+
+sudo: pam_open_session: Permission denied
+
+sudo: policy plugin failed session initialization
+
+ 
+
+But resolved it by running the following -
+
+[root@c1z-dv-docker-01 /]# echo > /etc/security/limits.conf  // https://github.com/openSUSE/docker-containers/issues/82 at the very end of the chain..
+
+ 
+
+[root@c1z-dv-docker-01 /]# id lfnet
+
+uid=7825(lfnet) gid=7825(lfnet) groups=7825(lfnet)
+
+[root@c1z-dv-docker-01 /]#
+
+ 
+
+ 
+
+ 
+
+sudo yum install lfnet --enablerepo=*
+
+ 
+
+sudo yum install lfnet-onl --enablerepo=*
+
+ 
+
+Then got the runtime shared libraries not found issue.
+
+[lfnet@c1z-dv-esdkr-01 ~]$ ldd /usr/local/bin/lfnet_lfnet | grep -Pi intel
+
+[lfnet@c1z-dv-esdkr-01 ~]$//nothing
+
+ 
+
+ 
+
+So, i need to install LfnetMeta package.
+
+ 
+
+ 
+
+So, installed, LfnetMeta -
+
+[root@c1z-dv-esdkr-01 /]# sudo yum --enablerepo="RHEL*,Epel7*,rmidc-edesk" --disablerepo="rhel7-ICE" install LfnetMeta
+
+ 
+
+After the LfnetMeta install,
+
+[lfnet@c1z-dv-esdkr-01 ~]$ ldd /usr/local/bin/lfnet_lfnet | grep -Pi intel
+
+        libippi.so.8.2 => /opt/intel/composer_xe_2015.1.133/ipp/lib/intel64/libippi.so.8.2 (0x00007f642bfce000)
+
+        libippdc.so.8.2 => /opt/intel/composer_xe_2015.1.133/ipp/lib/intel64/libippdc.so.8.2 (0x00007f642bdc5000)
+
+        libiomp5.so => /opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libiomp5.so (0x00007f642ba90000)
+
+        libirng.so => /opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libirng.so (0x00007f642b889000)
+
+        libintlc.so.5 => /opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libintlc.so.5 (0x00007f642b62e000)
+
+        libipps.so.8.2 => /opt/intel/composer_xe_2015.1.133/ipp/lib/intel64/libipps.so.8.2 (0x00007f642b3c3000)
+
+        libippcore.so.8.2 => /opt/intel/composer_xe_2015.1.133/ipp/lib/intel64/libippcore.so.8.2 (0x00007f642b1b7000)
+
+[lfnet@c1z-dv-esdkr-01 ~]$
+
+ 
+
+*** /var/cache/yum consumig more space
+
+sudo yum clean all ///removed or cleaned up much space in GB
+
+ 
+
+or sudo yum clean metadata
+
+ 
+
+or even i removed /var/cache/yum to cleanup the entire space. //https://www.thegeekdiary.com/var-cache-yum-constantly-filling-files-system-in-centos-rhel/
+
+ 
+
+ 
+
+ 
+
+[root@c1z-dv-esdkr-01 /]# pwd
+
+/
+
+[root@c1z-dv-esdkr-01 /]# du -sh
+
+du: cannot access ‘./proc/1729/task/1729/fd/3’: No such file or directory
+
+du: cannot access ‘./proc/1729/task/1729/fdinfo/3’: No such file or directory
+
+du: cannot access ‘./proc/1729/fd/4’: No such file or directory
+
+du: cannot access ‘./proc/1729/fdinfo/4’: No such file or directory
+
+3.4G    .
+
+[root@c1z-dv-esdkr-01 /]# du -sh *
+
+0       bin
+
+0       boot
+
+0       dat
+
+0       dev
+
+14M     etc
+
+0       fnet
+
+0       gdat
+
+1.4M    home
+
+0       lfnet
+
+0       lib
+
+0       lib64
+
+0       media
+
+0       mnt
+
+1.4G    opt
+
+du: cannot access ‘proc/1730/task/1730/fd/3’: No such file or directory
+
+du: cannot access ‘proc/1730/task/1730/fdinfo/3’: No such file or directory
+
+du: cannot access ‘proc/1730/fd/3’: No such file or directory
+
+du: cannot access ‘proc/1730/fdinfo/3’: No such file or directory
+
+0       proc
+
+44K     root
+
+4.0K    run
+
+0       sbin
+
+0       srv
+
+0       sys
+
+47M     tmp
+
+1.8G    usr
+
+218M    var
+
+[root@c1z-dv-esdkr-01 /]#
+
+ 
+
+As the lfnet user:
+
+Lfnet
+
+Run ipcs
+
+ 
+
+[lfnet@c1z-dv-esdkr-01 ~]$ ipcs
+
+ 
+
+------ Message Queues --------
+
+key        msqid      owner      perms      used-bytes   messages
+
+ 
+
+------ Shared Memory Segments --------
+
+ 
+
+------ Semaphore Arrays --------
+
+key        semid      owner      perms      nsems
+
+ 
+
+Run lfnet --init-map all
+
+[lfnet@c1z-dv-esdkr-01 ~]$ ipcs
+
+ 
+
+------ Message Queues --------
+
+key        msqid      owner      perms      used-bytes   messages
+
+ 
+
+------ Shared Memory Segments --------
+
+key        shmid      owner      perms      bytes      nattch     status
+
+0x000012db 393216     lfnet      777        1567543296 0
+
+0x000012ba 425985     lfnet      777        506376192  0
+
+0x000012aa 458754     lfnet      777        15200256   0
+
+0x000012cc 491523     lfnet      777        299008     0
+
+ 
+
+If any of the shmid is zero, we need to run lfnet --del-map all and run the lfnet --init-map all to check the ipcs is correct.
+
+ 
+
+Committing the container as lfnet:base image à
+
+# sudo docker commit 1a820fedb521 lfnet:base
+
+ 
+
+entptools@c1z-dv-esett-02 $ sudo docker images|grep lfnet
+
+lfnet                                                                              base
+
+                      ca8f7e4d1f41        43 minutes ago      3.51GB
+
+entptools@c1z-dv-esett-02 $
