@@ -1,5 +1,5 @@
 #!/bin/bash
-check=`docker ps|grep $1`
+check=`sudo docker ps --no-trunc|grep $1`
 if [ -z $check ];then
 	echo "no"
 else
