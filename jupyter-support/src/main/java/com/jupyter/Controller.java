@@ -53,15 +53,15 @@ public class Controller {
 			return "Jupyter Stopped";
 		}
 	}
-	
+
 	@RequestMapping(value = "/checkContainer", method = RequestMethod.POST)
-	public @ResponseBody String checkContainer(@RequestParam String container_id, HttpServletResponse res) {
+	public @ResponseBody String checkContainer(HttpServletResponse res)
+	{
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		RemoteScript rs = new RemoteScript();
-		String response =null;
-		if (!container_id.isEmpty()) {
-			response = rs.checkContainer(container_id);
-		}
-		return response;
+		JSONObject response = null;
+		response = rs.checkContainer();
+
+		return response.toString();
 	}
 }
