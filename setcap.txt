@@ -1,81 +1,81 @@
 User_Alias ENTPTOOLSUSER=%cm,%entptools
 
-Cmnd_Alias ESIGSETCAPSU=usrsbinsetcap CAP_NET_RAW+eip CAP_NET_ADMIN+eip .[a-zA-Z0-9]
+Cmnd_Alias ESIGSETCAPSU=/usr/sbin/setcap CAP_NET_RAW+eip CAP_NET_ADMIN+eip ./[a-zA-Z0-9]*
 
-ENTPTOOLSUSER ALL=(root)NOPASSWDESIGSETCAPSU
+ENTPTOOLSUSER ALL=(root)NOPASSWD:ESIGSETCAPSU
 
-entptools  ALL=(root)NOPASSWDESIGSETCAPSU
+entptools  ALL=(root)NOPASSWD:ESIGSETCAPSU
 
  
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbincapinfos                 2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/capinfos                 2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbincaptype                  2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/captype                  2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbindumpcap                  2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/dumpcap                  2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbineditcap                  2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/editcap                  2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinidl2wrs                  2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/idl2wrs                  2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinmergecap                 2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/mergecap                 2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinrandpkt                  2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/randpkt                  2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinrawshark                 2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/rawshark                 2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinreordercap               2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/reordercap               2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinsharkd                   2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/sharkd                   2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbintext2pcap                2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/text2pcap                2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbintshark                   2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/tshark                   2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinwireshark                2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/wireshark                2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrlocalbinwireshark-qt             2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/local/bin/wireshark-qt             2>/dev/null 1>&2 || /bin/true
 
-# ICElegacy
+# ICE/legacy
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbincapinfos                      2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/capinfos                      2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbindftest                        2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/dftest                        2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbindumpcap                       2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/dumpcap                       2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbineditcap                       2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/editcap                       2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbinmergecap                      2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/mergecap                      2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbinrandpkt                       2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/randpkt                       2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbinrawshark                      2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/rawshark                      2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbinreordercap                    2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/reordercap                    2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbintext2pcap                     2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/text2pcap                     2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip usrsbintshark                        2devnull 1&2  bintrue
-
-#
-
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip varoptlfnetusrlocalbinlfnet_main 2devnull 1&2  bintrue
-
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip varoptlfnetusrlocalbinpgmrecv    2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /usr/sbin/tshark                        2>/dev/null 1>&2 || /bin/true
 
 #
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which dumpcap)                        2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /var/opt/lfnet/usr/local/bin/lfnet_main 2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which nmap)                           2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip /var/opt/lfnet/usr/local/bin/pgmrecv    2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which socat)                          2devnull 1&2  bintrue
+#
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which tcpdump)                        2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which dumpcap)                        2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which tcptraceroute)                  2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which nmap)                           2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which traceroute)                     2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which socat)                          2>/dev/null 1>&2 || /bin/true
 
-setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which tshark)                         2devnull 1&2  bintrue
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which tcpdump)                        2>/dev/null 1>&2 || /bin/true
+
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which tcptraceroute)                  2>/dev/null 1>&2 || /bin/true
+
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which traceroute)                     2>/dev/null 1>&2 || /bin/true
+
+setcap cap_net_raw,cap_net_admin,cap_net_bind_service=+eip $(which tshark)                         2>/dev/null 1>&2 || /bin/true
