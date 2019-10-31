@@ -9,6 +9,7 @@ import { URLSearchParams } from '@angular/http';
   styleUrls: ['./csvupload.component.css']
 })
 export class CsvuploadComponent implements OnInit {
+  container_name: any;
   container_id: any;
   height: any;
 
@@ -20,7 +21,8 @@ export class CsvuploadComponent implements OnInit {
   constructor(private http: Http, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.start_jupyter();
+    this.check_jupyter();
+    this.height = window.innerHeight - 120;
   }
   openFile(event) {
     var files = event.target.files;
@@ -37,12 +39,10 @@ export class CsvuploadComponent implements OnInit {
     }
   }
   uploadCSV() {
-
-    if (localStorage.getItem("container_name") != undefined) {
       if(this.binaryString!=undefined)
       {
         this.loading=false;
-        var requestData = { 'data': btoa(this.binaryString), 'filename': this.filename, 'container_id': localStorage.getItem("container_id") };
+        var requestData = { 'data': btoa(this.binaryString), 'filename': this.filename, 'container_id': this.container_id };
         this.upload_service(requestData).then((data: any) => {
           alert("File Uploaded Successfully")
           this.loading=false;
@@ -52,21 +52,13 @@ export class CsvuploadComponent implements OnInit {
       {
         alert("please select file and upload")
       }
-      
-    } else {
-      alert("Please Start Jupyter and Upload File")
-    }
   }
   stopJupyter(){
     this.loading=true;
-    var requestData = { 'container_id': localStorage.getItem("container_id")};
+    var requestData = { 'container_id': this.container_id};
     this.stop_jupyter_service(requestData).then((data) => {
       if(data!=undefined)
       {
-        
-        localStorage.removeItem('container_name');
-        localStorage.removeItem('port');
-        localStorage.removeItem('container_id');
         this.iframe_url=undefined;
         this.port=undefined;
         this.container_id=undefined;
@@ -80,22 +72,37 @@ export class CsvuploadComponent implements OnInit {
       
     })
   }
+  check_jupyter(){
+    this.loading=true;
+    this.check_jupyter_service().then((data: any) => {
+      if(data.status=='yes')
+      {
+        this.container_id=data.container_id;
+        this.port=data.port;
+        this.container_name=data.container_name;
+        let url = environment.ip + this.port + "/lab"
+        this.iframe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url)
+        this.loading = false;
+      }
+      else
+      {
+        this.loading = false;
+        alert("Please Start Jupyter")
+      }
+     
+    })
+
+  }
   start_jupyter() {
     this.loading = true;
-    if (localStorage.getItem("container_name") == undefined) {
+   
       this.start_jupyter_service().then((data: any) => {
-        console.log(data)
+       
         if (data.port != undefined && data.port.length>0) {
         setTimeout(()=> {
           this.port = data.port;
           this.container_id=data.container_id;
-          localStorage.removeItem('container_name');
-          localStorage.removeItem('port');
-          localStorage.removeItem('container_id');
-          localStorage.setItem("container_name", data.container_name);
-          localStorage.setItem("container_id", data.container_id);
-          localStorage.setItem("port", data.port);
-          let url = environment.ip + data.port + "/lab"
+          let url = environment.ip + this.port + "/lab"
           this.iframe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url)
           this.loading = false;
         }, 12000);
@@ -105,35 +112,6 @@ export class CsvuploadComponent implements OnInit {
           this.loading = false;
         }
       })
-    }
-    else {
-     
-    
-      this.check_jupyter_service(localStorage.getItem("container_id")).then((data: any) => {
-        console.log(data._body)
-          if(data._body=='yes')
-          {
-           
-            this.port = localStorage.getItem("port")
-             this.container_id=localStorage.getItem("container_id")
-             let url = environment.ip + this.port  + "/lab"
-             this.iframe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url)
-             this.loading = false;
-          }
-          else{
-
-            localStorage.removeItem('container_name');
-          localStorage.removeItem('port');
-          localStorage.removeItem('container_id');
-          this.port=undefined;
-          this.container_id=undefined;
-          this.loading=false;
-          }
-      })
-      
-      
-    }
-    this.height = window.innerHeight - 120;
   }
 
   start_jupyter_service() {
@@ -187,14 +165,13 @@ export class CsvuploadComponent implements OnInit {
           });
       });
   }
-  check_jupyter_service(requestData) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('container_id', requestData);
+  check_jupyter_service() {
+   
     return new Promise(
       (resolve, reject) => {
-        return this.http.post(environment.ip + environment.apiendpoint + 'checkContainer',urlSearchParams)
+        return this.http.post(environment.ip + environment.apiendpoint + 'checkContainer','')
           .subscribe(res => {
-            const data: any = res
+            const data: any = res.json()
             resolve(data);
           },
           (err) => {
