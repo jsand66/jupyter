@@ -1,6 +1,8 @@
 package com.csvtojson;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Data implements Serializable {
 
@@ -15,7 +17,25 @@ public class Data implements Serializable {
 
 	private String lrt_type = "";
 
-	private String lrt_value = "";
+	private String lrtvalue = "";
+
+	private List<LRTType> lrt_value = new ArrayList<LRTType>();
+
+	public String getLrtvalue() {
+		return lrtvalue;
+	}
+
+	public void setLrtvalue(String lrtvalue) {
+		this.lrtvalue = lrtvalue;
+	}
+
+	public List<LRTType> getLrt_value() {
+		return lrt_value;
+	}
+
+	public void setLrt_value(List<LRTType> lrt_value) {
+		this.lrt_value = lrt_value;
+	}
 
 	public String getFormat() {
 		return format;
@@ -39,14 +59,6 @@ public class Data implements Serializable {
 
 	public void setLrt_type(String lrt_type) {
 		this.lrt_type = lrt_type;
-	}
-
-	public String getLrt_value() {
-		return lrt_value;
-	}
-
-	public void setLrt_value(String lrt_value) {
-		this.lrt_value = lrt_value;
 	}
 
 }

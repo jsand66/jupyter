@@ -39,9 +39,10 @@ public class App {
 			}
 		}
 
-		// OneSymbol sym = new OneSymbol();
-		// MultipleSymbols ms = new MultipleSymbols();
-		// ms.symbolMutlple("C:\\Users\\hvenkate\\Desktop\\1242908.txt");
+//		OneSymbol ms = new OneSymbol();
+//		//MultipleSymbols ms = new MultipleSymbols();
+//		//ms.symbolMutlple("C:\\Users\\gambati\\Desktop\\multi", "C:\\Users\\gambati\\Desktop\\multi.json");
+//		ms.symbolOne("C:\\Users\\gambati\\Desktop\\AAPL", "C:\\Users\\gambati\\Desktop\\AAPL.json");
 
 	}
 

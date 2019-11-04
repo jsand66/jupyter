@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -31,6 +33,8 @@ public class MultipleSymbols {
 		List<MultipleOutput> ot = new ArrayList<MultipleOutput>();
 		List<Data> dl = new ArrayList<Data>();
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		mapper.setSerializationInclusion(Include.NON_EMPTY);
 		File myfile = new File(outputFile);
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -74,10 +78,41 @@ public class MultipleSymbols {
 							String d1 = st.replaceAll("\\)", "\\)|").replaceAll("\\s{4,}", "");
 							String data[] = d1.split("\\|");
 							String[] val = data[1].replaceAll("\\(", "").replaceAll("\\)", "").split(" ");
-							d2.setLrt_type(data[1]);
+							if (data[2].contains("time")) {
+								String d[] = data[2].replaceAll("\\[", "").replaceAll("\\]", "").split(",");
+								List<LRTType> lrttypeList = new ArrayList<LRTType>();
+								for (int i = 0; i < d.length; i++) {
+									LRTType lrtype = new LRTType();
+									String d3[] = d[i].split(":");
+									lrtype.setLrt_type(d3[0]);
+									lrtype.setLrtvalue(d3[1]);
+									lrtype.setLrt_token(val[1]);
+									lrttypeList.add(lrtype);
+								}
+								d2.setLrt_value(lrttypeList);
+							} else if (data[2].contains("Base")) {
+								List<LRTType> lrttypeList = new ArrayList<LRTType>();
+								String[] d = data[2].split("B");
+								String[] e = d[0].split(":");
+								LRTType lrtype = new LRTType();
+								lrtype.setLrt_type("Value");
+								lrtype.setLrtvalue(e[1]);
+								lrtype.setLrt_token(val[1]);
+								lrttypeList.add(lrtype);
+								LRTType lrtype1 = new LRTType();
+								String[] f = d[1].split(":");
+								lrtype1.setLrt_type("Base");
+								lrtype1.setLrtvalue(f[1]);
+								lrtype1.setLrt_token(val[1]);
+								lrttypeList.add(lrtype1);
+								d2.setLrt_value(lrttypeList);
+							} else {
+								d2.setLrtvalue(data[2]);
+							}
+							String[] t1 = data[1].split("\\(");
+							d2.setLrt_type(t1[0]);
 							d2.setFormat(data[0]);
 							d2.setLrt_token_id(val[1]);
-							d2.setLrt_value(data[2]);
 							dl.add(d2);
 						} else {
 							MultipleOutput output = new MultipleOutput();
@@ -107,8 +142,15 @@ public class MultipleSymbols {
 			model.setPayload_compression(payload_compression);
 			fi.setMessage(model);
 			fi.setOutput(ot);
+			
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(myfile, fi);
+			String out = mapper.writeValueAsString(fi).replaceAll("lrtvalue", "lrt_value");
+			FileWriter fileWriter = new FileWriter(myfile);
+
+			fileWriter.write(out);
+			fileWriter.flush();
+			fileWriter.close();
+			//mapper.writeValue(myfile, fi);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
