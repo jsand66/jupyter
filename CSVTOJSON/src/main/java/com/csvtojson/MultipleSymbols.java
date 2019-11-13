@@ -101,6 +101,18 @@ public class MultipleSymbols {
 								lrttypeList.add(lrtype);
 								LRTType lrtype1 = new LRTType();
 								String[] f = d[1].split(":");
+								String time="";
+								if(f.length >2) {
+									for (int j =1;j<f.length;j++) {
+										if(j != f.length -1)
+											time=time+f[j]+":";
+										else
+											time=time+f[j];
+									}
+								}
+								else {
+									time=f[1];
+								}
 								lrtype1.setLrt_type("Base");
 								lrtype1.setLrtvalue(f[1]);
 								lrtype1.setLrt_token(val[1]);

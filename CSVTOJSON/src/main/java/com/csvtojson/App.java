@@ -22,7 +22,7 @@ public class App {
 				br = new BufferedReader(new FileReader(file));
 				String st;
 				st = br.readLine();
-				if (st.contains("REAL TIME TRADE")) {
+				if (st.contains("REAL TIME") || st.contains("BACKGROUND")) {
 					OneSymbol sym = new OneSymbol();
 					sym.symbolOne(args[0], args[1]);
 				} else {
@@ -39,10 +39,10 @@ public class App {
 			}
 		}
 
-//		OneSymbol ms = new OneSymbol();
-//		//MultipleSymbols ms = new MultipleSymbols();
+		//OneSymbol ms = new OneSymbol();
+		//MultipleSymbols ms = new MultipleSymbols();
 //		//ms.symbolMutlple("C:\\Users\\gambati\\Desktop\\multi", "C:\\Users\\gambati\\Desktop\\multi.json");
-//		ms.symbolOne("C:\\Users\\gambati\\Desktop\\AAPL", "C:\\Users\\gambati\\Desktop\\AAPL.json");
+		//ms.symbolOne("C:\\Users\\gambati\\Desktop\\AAPL", "C:\\Users\\gambati\\Desktop\\AAPL.json");
 
 	}
 

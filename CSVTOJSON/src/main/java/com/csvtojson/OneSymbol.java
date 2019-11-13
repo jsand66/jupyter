@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.gson.Gson;
 
 public class OneSymbol {
 
@@ -35,7 +32,7 @@ public class OneSymbol {
 			br = new BufferedReader(new FileReader(file));
 			String st;
 			while ((st = br.readLine()) != null) {
-				if (st.contains("REAL TIME TRADE")) {
+				if (st.contains("REAL TIME")) {
 					message_type1 = "REAL TIME TRADE";
 					String[] arr = st.split("\\s{2,}");
 					String[] cap_time = arr[1].split("=");
@@ -61,8 +58,20 @@ public class OneSymbol {
 							for (int i = 0; i < d.length; i++) {
 								LRTType lrtype = new LRTType();
 								String d3[] = d[i].split(":");
+								String time="";
+								if(d3.length >2) {
+									for (int j =1;j<d3.length;j++) {
+										if(j != d3.length -1)
+											time=time+d3[j]+":";
+										else
+											time=time+d3[j];
+									}
+								}
+								else {
+									time=d3[1];
+								}
 								lrtype.setLrt_type(d3[0]);
-								lrtype.setLrtvalue(d3[1]);
+								lrtype.setLrtvalue(time);
 								lrtype.setLrt_token(val[1]);
 								lrttypeList.add(lrtype);
 							}
@@ -110,7 +119,6 @@ public class OneSymbol {
 			}
 			fi.setOutput(ot);
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			System.out.println(mapper.writeValueAsString(fi));
 			String out= mapper.writeValueAsString(fi).replaceAll("lrtvalue", "lrt_value");
 			FileWriter fileWriter = new FileWriter(myfile);
 			
