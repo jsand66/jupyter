@@ -26,9 +26,13 @@ public class RemoteScript {
 				System.out.println("out " + output);
 				if (!output.isEmpty()) {
 					String container_id = output.replaceAll("\\s", "");
-					String container_name = runContainerScript(container_id);
+					String out= runContainerScript(container_id);
+					String[] contDetails=out.split(",");
+					//String container_name = runContainerScript(container_id);
+					String container_name = contDetails[0];
 					System.out.println("container Name" + container_name);
-					String port = runContainerPort(container_id);
+					//String port = runContainerPort(container_id);
+					String port = contDetails[1];
 					System.out.println("port:" + port);
 					object.put("container_id", container_id);
 					object.put("container_name", container_name);
@@ -135,7 +139,7 @@ public class RemoteScript {
 		return output;
 	}
 
-	public String saveWorkspace(String container_id) {
+	/*public String saveWorkspace(String container_id) {
 		String output = null;
 
 		try {
@@ -157,7 +161,7 @@ public class RemoteScript {
 			e.printStackTrace();
 		}
 		return output;
-	}
+	} */
 
 	public JSONObject checkContainer() {
 		String output = null;

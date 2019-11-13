@@ -47,7 +47,7 @@ public class Controller {
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		RemoteScript rs = new RemoteScript();
 		if (!container_id.isEmpty()) {
-			String resposne = rs.stopJupyter(container_id);
+			String response = rs.stopJupyter(container_id);
 			return "Jupyter Stopped";
 		} else {
 			return "Jupyter Stopped";

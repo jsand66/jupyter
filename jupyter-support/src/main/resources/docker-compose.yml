@@ -1,0 +1,12 @@
+version: '3.6'
+services:
+    myapp:
+        image: jupyter-datascience:base
+        read_only: true
+        ports:
+        - "8000:8888"
+        volumes:
+        - "/var/opt/entptools/pcapquery/jupyter-work:/home/entptools"
+        build: .
+        container_name: jupyter-container
+        hostname: c1z-dv-esjpr-01
